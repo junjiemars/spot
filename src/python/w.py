@@ -6,6 +6,7 @@
 #------------------------------------------------
 
 from bs4 import BeautifulSoup
+import platform
 import json, urllib
 import sys
 from os.path import basename
@@ -36,7 +37,7 @@ def verbose_json(j):
     return json.dumps(j)
 
 def version(argv):
-    print('%s version %s' % (basename(argv[0]), '1.1.0.0'))
+    print('%s %s (%s)' % (basename(argv[0]), '0.1.0', platform.platform()))
     sys.exit(0)
 
 def usage(argv, xcode):
@@ -65,10 +66,10 @@ def main(argv):
     
     try:
         (opts, args) = getopt.getopt(sys.argv[1:],
-                                     ':c:a:i:o:rhdv',
+                                     ':c:a:i:o:rhdvV',
                                      ['city=','area=',
                                       'input=', 'output=', 'retry=',
-                                      'help', 'debug','verbose'])
+                                      'help', 'debug','verbose','version'])
     except getopt.GetoptError, err:
         print(str(err)+'!')
         return (usage(100))
@@ -82,7 +83,7 @@ def main(argv):
         elif k in ('-v', '--verbose'): verbose += 1
 	elif k in ('-r', '--retry'): retry = int(v)
 	elif k in ('-h', '--help'): return(usage(argv, 0))
-	elif k in ('--version'): version(argv)
+	elif k in ('-V', '--version'): version(argv)
 	else: return (200)
 
     for i in range(retry):
